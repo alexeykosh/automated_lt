@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$USER_HOME$/Documents/automated_lt/.idea/automated_lt.iml" filepath="$USER_HOME$/Documents/automated_lt/.idea/automated_lt.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/automated_lt.iml" filepath="$PROJECT_DIR$/.idea/automated_lt.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../automated_lt/.idea/automated_lt.iml" filepath="$PROJECT_DIR$/../../automated_lt/.idea/automated_lt.iml" />
     </modules>
   </component>
 </project>

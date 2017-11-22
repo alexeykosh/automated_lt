@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # author: Alexey Koshevoy
 
-from openpyxl import load_workbook, Workbook
+from openpyxl import load_workbook, Workbook, worksheet
 import re
 
 
@@ -12,6 +12,7 @@ class QuTable:
         self.path = path
         self.sheet_name = sheet
         self.sheet = self.get_sheet()
+        self.wb = self.create_new_excel()
 
     @staticmethod
     def read_table(path):
@@ -21,6 +22,10 @@ class QuTable:
     def get_sheet(self):
         """
         Make it optional – only if there is some sheets??
+
+        Maybe we can use this:
+
+        # >>> df = DataFrame(ws.values)
         """
         wb = self.read_table(path=self.path)
         sheet = wb[self.sheet_name]
@@ -48,6 +53,25 @@ class QuTable:
         vertical_list = list(self.iter_rows(sheet))[0]
         return vertical_list
 
+    @staticmethod
+    def create_new_excel():
+        wb = Workbook()
+        return wb
+
+    def write(self, hor_list, ver_list):
+        wb = self.wb
+        ws1 = wb.create_sheet("{}_t".format(self.sheet_name))
+
+        if hor_list:
+            for i in range(len(hor_list)):
+                ws1(row=1,col=i).value = hor_list[i]
+
+        if ver_list:
+            for i in range(len(ver_list)):
+                ws1(row=i, col=1).value = ver_list[i]
+
+        wb.save(filename='I_tried.xlsx')
+
 
 class Translation:
 
@@ -56,7 +80,8 @@ class Translation:
 
     @staticmethod
     def get_dictionary():
-        path = '/Users/Alexey/Documents/automated_lt/dictionary/ru-de.txt'
+        path = \
+            '/Users/alexey/Documents/Python/automated_lt/dictionary/ru-de.txt'
         dictionary = open(path).readlines()
         return dictionary
 
@@ -85,13 +110,17 @@ class Translation:
         return list_words
 
 
-
 a = QuTable\
-    (path='/Users/Alexey/Documents/automated_lt/questionnaire'
-          '/questionnaire_size.xlsx', sheet='русский_стандртный_вид')
-# list_w = a.get_horizontal_list()
-print(a.get_vertical_list())
-# print(list_w)
+    (path='/Users/alexey/Documents/Python/automated_lt/questionnaire_size.xlsx'
+     , sheet='русский_стандртный_вид')
+list_w = a.get_horizontal_list()
+list_v = a.get_vertical_list()
+
+b = Translation(list_w)
+# s = Translation(list_v)
+list_w_t = b.change_list(b.get_dictionary())
+# list_v_t = s.change_list(b.get_dictionary())
+
+print(list_w_t)
 #
-# b = Translation(list_w)
-# print(b.change_list(b.get_dictionary()))
+# a.write(list_w_t, list_v_t)
